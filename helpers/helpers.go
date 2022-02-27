@@ -7,11 +7,11 @@ import (
 	"path/filepath"
 )
 
-func createFileOnDirectory(text string, fileName string, path ...string) {
+func CreateFileOnDirectory(text string, fileName string, path ...string) {
 	pathResult := filepath.Join(path...)
 	path = append(path, fileName)
 	pathResultWithFileName := filepath.Join(path...)
-	createIfNotExistDirectory(pathResult)
+	CreateIfNotExistDirectory(pathResult)
 	fmt.Println(path)
 	file, err := os.Create(pathResultWithFileName)
 	if err != nil {
@@ -28,7 +28,7 @@ func createFileOnDirectory(text string, fileName string, path ...string) {
 	fmt.Println("done")
 }
 
-func createIfNotExistDirectory(directory string) {
+func CreateIfNotExistDirectory(directory string) {
 	if err := ensureDir(directory); err != nil {
 		fmt.Println("Directory creation failed with error: " + err.Error())
 		os.Exit(1)

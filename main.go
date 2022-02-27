@@ -1,14 +1,19 @@
 package main
 
-import "golang-cass-crud-gen/helpers"
+import "golang-cass-crud-gen/creator"
 
 func main() {
-	type ServerModel struct {
-		Name     string
-		Id       int
-		Enabled  bool
-		ClientId int64
+	type ServerModelDto struct {
+		Name                     string
+		Id                       int
+		Enabled                  bool
+		ClientId                 int64
+		AverageDailySessionCount int16
 	}
 
-	helpers.CreateCassCrud("test_db", "name, id", &ServerModel{})
+	creator.CreateCassCrud("test_db",
+		[]string{
+			"Id",
+			"ClientId",
+		}, &ServerModelDto{})
 }

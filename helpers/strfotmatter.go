@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func formatStrFromUppercaseToLowercase(text string) string {
+func FormatStrFromUppercaseToLowercase(text string) string {
 	re := regexp.MustCompile(`[A-Z][^A-Z]*`)
 	submatchall := re.FindAllString(text, -1)
 	name := ""
@@ -20,32 +20,46 @@ func formatStrFromUppercaseToLowercase(text string) string {
 	return strings.ToLower(name)
 }
 
-func structToFieldListWithType(model interface{}) string {
+func StructToFieldListWithType(model interface{}) string {
 
 	fields := structs.Names(model)
 	fieldList := ""
 	for i, v := range fields {
 		t := structs.Fields(model)[i].Kind()
-		fieldList = fieldList + formatStrFromUppercaseToLowercase(v) + " " + golangTypeToCassType(t.String()) + ", "
+		fieldList = fieldList + FormatStrFromUppercaseToLowercase(v) + " " + golangTypeToCassType(t.String()) + ", "
 	}
 	return fieldList
 }
 
-func structToFieldListWithoutType(model interface{}) string {
+func StructToFieldListWithoutType(model interface{}) string {
 
 	fields := structs.Names(model)
 	fieldList := ""
 	for i, v := range fields {
 		if i != len(fields)-1 {
-			fieldList = fieldList + formatStrFromUppercaseToLowercase(v) + ", "
+			fieldList = fieldList + FormatStrFromUppercaseToLowercase(v) + ", "
 			continue
 		}
-		fieldList = fieldList + formatStrFromUppercaseToLowercase(v)
+		fieldList = fieldList + FormatStrFromUppercaseToLowercase(v)
 	}
 	return fieldList
 }
 
-func getQuestionMarkByStructFieldCount(model interface{}) string {
+func StructToFieldListWithoutTypeWithQuestionMark(model interface{}) string {
+
+	fields := structs.Names(model)
+	fieldList := ""
+	for i, v := range fields {
+		if i != len(fields)-1 {
+			fieldList = fieldList + FormatStrFromUppercaseToLowercase(v) + "=?, "
+			continue
+		}
+		fieldList = fieldList + FormatStrFromUppercaseToLowercase(v) + "=?"
+	}
+	return fieldList
+}
+
+func GetQuestionMarkByStructFieldCount(model interface{}) string {
 	fields := structs.Names(model)
 	questionMarks := ""
 
@@ -57,6 +71,32 @@ func getQuestionMarkByStructFieldCount(model interface{}) string {
 		questionMarks = questionMarks + "?"
 	}
 	return questionMarks
+}
+
+func GetListToStr(t []string) string {
+
+	texts := ""
+	for i, v := range t {
+		if i != len(t)-1 {
+			texts = texts + FormatStrFromUppercaseToLowercase(v) + ", "
+			continue
+		}
+		texts = texts + FormatStrFromUppercaseToLowercase(v)
+	}
+	return texts
+}
+
+func PkToStrQuery(pk []string) string {
+	texts := ""
+	for i, v := range pk {
+		if i != len(pk)-1 {
+			texts = texts + FormatStrFromUppercaseToLowercase(v) + "= ? AND "
+			continue
+		}
+		texts = texts + FormatStrFromUppercaseToLowercase(v) + " = ?"
+	}
+	return texts
+
 }
 
 func golangTypeToCassType(t string) string {
