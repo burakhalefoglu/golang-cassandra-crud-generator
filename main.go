@@ -14,6 +14,5 @@ func main() {
 	creator.CreateCassCrud("test_db",
 		[]string{
 			"Id",
-			"ClientId",
 		}, &ServerModelDto{})
 }
